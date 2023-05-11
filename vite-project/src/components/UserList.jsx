@@ -1,8 +1,16 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { userDeleted } from "./usersSlice";
 
 export default function UserList() {
+  const dispatch = useDispatch();
+
   const users = useSelector((state) => state.users);
+
+  const handleDelete = (id) => {
+    dispatch(userDeleted({ id }));
+  };
 
   return (
     <div className="container">
@@ -10,10 +18,12 @@ export default function UserList() {
         <h1>Redux CRUD User app</h1>
       </div>
       <div>
-        <button className="button-primary">Load users</button>
+        {/* <button className="button-primary">Load users</button> */}
         <br />
         <br />
-        <button className="button-primary">Add user</button>
+        <Link to="/add">
+          <button className="button-primary">Add user</button>
+        </Link>
       </div>
       <br />
       <div>
@@ -32,8 +42,10 @@ export default function UserList() {
               <td>{name}</td>
               <td>{email}</td>
               <td>
-                <button>Delete</button>
-                <button>Edit</button>
+                <button onClick={() => handleDelete(id)}>Delete</button>
+                <Link to={`/edit/${id}`}>
+                  <button>Edit</button>
+                </Link>
               </td>
             </tr>
           ))}

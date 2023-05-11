@@ -13,9 +13,26 @@ const usersSlice = createSlice({
     userAdded(state, action) {
       state.push(action.payload);
     },
+    userUpdated(state, action) {
+      const { id, name, email } = action.payload;
+      const existingUser = state.find((user) => user.id === id);
+      if (existingUser) {
+        existingUser.name = name;
+        existingUser.email = email;
+      }
+    },
+    userDeleted(state, action) {
+      const { id } = action.payload;
+      const existingUser = state.find((user) => user.id === id);
+      if (existingUser) {
+        return state.filter((user) => user.id !== id);
+      }
+    },
   },
 });
 
 export const { userAdded } = usersSlice.actions;
+export const { userUpdated } = usersSlice.actions;
+export const { userDeleted } = usersSlice.actions;
 
 export default usersSlice.reducer;
